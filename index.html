@@ -185,20 +185,24 @@ textarea{min-height:72px;resize:vertical;}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-/* =====================================================
-   CONFIGURATION FIREBASE
-   Remplacez les valeurs ci-dessous par celles de votre
-   projet Firebase (voir instructions README)
-   ===================================================== */
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "VOTRE_API_KEY",
-  authDomain: "VOTRE_PROJECT.firebaseapp.com",
-  databaseURL: "https://VOTRE_PROJECT-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "VOTRE_PROJECT",
-  storageBucket: "VOTRE_PROJECT.appspot.com",
-  messagingSenderId: "VOTRE_SENDER_ID",
-  appId: "VOTRE_APP_ID"
+  apiKey: "AIzaSyCnzym1lNThxq3iCjuMvBx56P5JAAwN7fY",
+  authDomain: "faq-ddi.firebaseapp.com",
+  databaseURL: "https://faq-ddi-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "faq-ddi",
+  storageBucket: "faq-ddi.firebasestorage.app",
+  messagingSenderId: "46379052098",
+  appId: "1:46379052098:web:729f192e90ef796f3711db"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 const PIN = '1234';
 let questions = [], currentPhase = 'waiting', adminUnlocked = false;
