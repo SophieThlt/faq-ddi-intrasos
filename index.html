@@ -185,7 +185,7 @@ textarea{min-height:72px;resize:vertical;}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCnzym1lNThxq3iCjuMvBx56P5JAAwN7fY",
   authDomain: "faq-ddi.firebaseapp.com",
@@ -195,7 +195,6 @@ const firebaseConfig = {
   messagingSenderId: "46379052098",
   appId: "1:46379052098:web:729f192e90ef796f3711db"
 };
-
 const PIN = '1234';
 let questions = [], currentPhase = 'waiting', adminUnlocked = false;
 let db;
@@ -209,7 +208,7 @@ try {
   });
   db.ref('questions').on('value', snap => {
     const data = snap.val();
-    questions = data ? Object.values(data) : [];
+    questions = data ? Object.entries(data).map(([id,v])=>({id,...v})) : [];
     if (currentPhase === 'vote') renderVoteList();
     if (currentPhase === 'results') renderResultsList();
   });
@@ -364,9 +363,13 @@ async function submitQuestions() {
 }
 
 async function vote(id) {
-  const q = questions.find(q => q.id === id); if (!q) return;
-  q.votes++;
-  await saveQuestions();
+  const voted = JSON.parse(localStorage.getItem('faqVotes') || '[]');
+  if(voted.includes(id)) return;
+  if (db) {
+    await db.ref('questions/'+id+'/votes').transaction(v => (v || 0) + 1);
+  }
+  voted.push(id);
+  localStorage.setItem('faqVotes', JSON.stringify(voted));
 }
 
 function renderVoteList() {
